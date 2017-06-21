@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>5</title>
+    <link href="../css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div class="wrap">
+    <div class="ani fast fade-in-top">
+        <div class="page-title">
+            <h1>5. 学首新歌</h1>
+        </div>
+        <div class="page-content">
+            <div class="music-learn">
+                <div class="cover">
+                    <img class="cover-img" src="../sources/verge.jpg">
+                </div>
+            </div>
+            <p>Ain’t too sure what I believe in<br>对我的信仰将信将疑</p>
+            <p>I believe in what I see<br>但我相信眼见为实</p>
+            <p>And when I close my eyes<br>但当我闭上双眼</p>
+            <p>I see my whole life ahead of me<br>完整的人生展现在我眼前</p>
+            <p>These are our hours (These are our hours)<br>这是属于我们的时代</p>
+            <p>This is our time (This is our time)<br>这是属于我们的时间</p>
+            <p>These are our hours (These are our hours)<br>这是属于我们的时代</p>
+            <p>Out on a verge<br>冲过边界</p>
+            <p>Out on a verge of the rest of our lives (the rest of our lives)<br>冲到边缘的另一侧，走向我们的余生</p>
+            <p>Out on a verge of the rest of our lives tonight<br>今晚，我们即将冲到边缘的另一侧，走向我们的余生</p>
+            <p>Top of the world and we'll dress to the night tonight<br>今晚，站在世界的巅峰，我们穿上最精美的服装</p>
+            <p>Edging the edge and we’re touching the sky tonight<br>站在世界之巅，我们触碰到了天空</p>
+            <p>Out on a verge of the rest of our lives<br>冲过我们这一生的边缘</p>
+            <p>These are our hours (These are our hours)<br>这是属于我们的时代</p>
+            <p>This is our time (This is our time)<br>这是属于我们的时间</p>
+            <p>These are our hours (These are our hours)<br>这是属于我们的时代</p>
+            <p>Out on a verge (Out on a verge)<br>冲过边界</p>
+            <p>Out on a verge of the rest of our lives<br>冲到边缘的另一侧，走向我们的余生</p>
+            <p>Out on a verge of the rest of our lives tonight<br>今晚，离开世界的边缘，走向我们的余生</p>
+            <p>Top of the world and we'll dress to the night tonight<br>今晚，站在世界的巅峰，我们穿上最精美的服装</p>
+            <p>Edging the edge and we’re touching the sky tonight<br>站在世界之巅，我们触碰到了天空</p>
+            <p>Out on a verge of the rest of our lives<br>冲到边缘的另一侧，走向我们的余生</p>
+            <p>From now on, there’s no looking back<br>从现在起，请不要再回头</p>
+            <p>Full-steam ahead on this one-way track<br>在这条人生的单行道上全速奔跑</p>
+            <p>From this day forth, I will make a promise<br>从今天起，我立下我的承诺</p>
+            <p>To be true to myself and always be honest<br>做最真实的自己，永远诚恳</p>
+            <p>For the rest of my life<br>在我的余生里</p>
+            <p>I will do what’s right<br>我会做出最正确的选择</p>
+            <p>I will do what’s right<br>我会做出最正确的选择</p>
+            <p>When i'm still ...<br>当我从这道边界迈过的时候</p>
+            <p>Out on a verge of the rest of our lives tonight<br>今晚，离开世界的边缘，我们走向的余生</p>
+            <p>Top of the world and we'll dress to the night tonight<br>今晚，站在世界的巅峰，我们穿上最精美的服装</p>
+            <p>Edging the edge and we’re touching the sky tonight<br>站在世界之巅，我们触碰到了天空</p>
+            <p>Out on a verge of the rest of our lives (the rest of our lives)<br>冲到边缘的另一侧，我们的余生</p>
+            <p>Edging the edge and we’re touching the sky tonight<br>站在世界之巅，我们触碰到了天空</p>
+            <p>Out on the verge of the rest of our lives<br>冲到边缘的另一侧，走向我们的余生</p>
+        </div>
+    </div>
+    <script>
+        var Audio = new Audio;
+        Audio.src = "../sources/verge.ogg";
+        var cover = document.getElementsByClassName("cover")[0];
+        var cover_img = document.getElementsByClassName("cover-img")[0];
+
+        cover.addEventListener("click", function () {
+            if(!Audio || Audio.paused){
+                Audio.play();
+                cover.classList.add("active");
+            }
+            else{
+                Audio.pause();
+                cover.classList.remove("active");
+            }
+        })
+    </script>
+</body>
+</html>

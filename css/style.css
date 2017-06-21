@@ -1,0 +1,519 @@
+﻿@charset "UTF-8";
+
+/* ----
+
+# Meeting
+# By: Dreamer-Paul
+# Last Update: 2017.6.20
+
+一个类幻灯片的网页，用于我在学校主持的一次以梦想为主题的晨会。
+
+欢迎你加入缤奇，和我们一起改变世界。
+本代码为缤奇保罗原创，并遵守 GPL3 开源协议。保罗的个人博客：https://hi-paul.space
+
+---- */
+
+/* 0 - 全局
+-------------------------------- */
+html, body,
+dl, dt, dd, ol, ul,
+h1, h2, h3, h4, h5, h6,
+pre, code, form, p,
+fieldset, legend{
+    margin: 0;
+    padding: 0;
+}
+body{
+    color: #222;
+    font: 16px /1.5 "微软雅黑";
+}
+
+*, *:before, *:after{
+    box-sizing: border-box;
+}
+
+/* - 部分老式浏览器的更正 */
+article, aside,
+header, footer,
+nav, section, main{
+    display: block;
+}
+
+/* - 已选内容 */
+::-moz-selection{
+    color: #fff;
+    background-color: rgba(0,0,0,0.66);
+}
+::selection{
+    color: #fff;
+    background-color: rgba(0,0,0,0.66);
+}
+
+/* - 排版 */
+p{
+    line-height: 1.8em;
+    margin-bottom: 1em;
+}
+
+h1{
+    font-size: 2em;
+}
+h1, h2, h3, h4, h5, h6{
+    margin-bottom: 1rem;
+}
+h1:last-child, h2:last-child, h3:last-child, h4:last-child, h5:last-child, h6:last-child, p:last-child{
+    margin-bottom: 0;
+}
+
+img{
+    height: auto;
+    max-width: 100%;
+}
+
+a{
+    color: #27a17e;
+    transition: all 0.3s;
+    text-decoration: none;
+}
+a:hover{
+    color: #ffc670;
+}
+
+header, footer{
+    left: 0;
+    right: 0;
+    position: fixed;
+}
+
+video{
+    width: 100%;
+    margin: 0 auto;
+}
+
+.btn{
+    outline: 0;
+    color: #fff;
+    font: inherit;
+    cursor: pointer;
+    user-select: none;
+    padding: .5em 1em;
+    border-radius: 4px;
+    background: #27a17e;
+    display: inline-block;
+    border: 1px solid #27a17e;
+}
+.btn:hover{
+    color: #fff;
+}
+.btn:active{
+    background: #138d6a;
+}
+
+input{
+    outline: 0;
+    font: inherit;
+    padding: .5em;
+    border-radius: 4px;
+    border: #ccc 1px solid;
+}
+
+/* 1 - 页眉
+-------------------------------- */
+header{
+    top: 0;
+    color: #fff;
+    z-index: 666;
+    height: 60px;
+    background: #27a17e;
+    box-shadow: 0 4px 5px -2px rgba(0,0,0,0.22);
+}
+.head-title{
+    float: left;
+    margin-left: 1em;
+    line-height: 60px;
+}
+
+/* - 头部按钮 */
+.side-btn, .random-btn, .music-btn{
+    width: 60px;
+    height: 60px;
+    cursor: pointer;
+    line-height: 60px;
+    text-align: center;
+}
+.side-btn:before, .random-btn:before, .music-btn:before{
+    font-size: 25px;
+    font-family: "FontAwesome";
+}
+
+.side-btn{
+    float: left;
+}
+.side-btn:before{
+    content: "\f0c9";
+}
+
+.random-btn{
+    float: right;
+}
+.random-btn:before{
+    content: "\f074";
+}
+
+.music-btn{
+    float: right;
+}
+.music-btn:before{
+    content: "\f028";
+}
+
+/* - 弹框盒子 */
+.random-box, .music-box{
+    z-index: 2;
+    background: #fff;
+    position: absolute;
+    transition: transform 0.3s;
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.2);
+}
+
+.random-box{
+    right: 0;
+    padding: 10px;
+    transform: translateY(-60px);
+}
+.random-box.active{
+    transform: translateY(60px);
+}
+
+.music-box{
+    right: 60px;
+    width: 200px;
+    text-align: center;
+    transform: translateY(-300px);
+}
+.music-box.active{
+    transform: translateY(60px);
+}
+.music-box ul{
+    list-style: none;
+    text-align: left;
+    line-height: 15px;
+}
+.music-box li{
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+.music-box li:hover{
+    background: #dfdfdf;
+}
+.music-item:nth-child(2n){
+    background: #f3f3f3;
+}
+#music_stop{
+    margin: 1em 0;
+}
+
+aside{
+    top: 60px;
+    z-index: 6;
+    bottom: 60px;
+    width: 300px;
+    position: fixed;
+    overflow-y: auto;
+    background: #fff;
+    transition: transform 0.3s;
+    transform: translateX(-350px);
+    box-shadow: 4px 0 5px -2px rgba(0,0,0,0.22);
+}
+aside.active{
+    transform: translateX(0);
+}
+
+aside li{
+    padding: 1em;
+    cursor: pointer;
+    transition: text-indent .3s;
+}
+aside li:hover{
+    text-indent: 1em;
+}
+
+/* 2 - 正文
+-------------------------------- */
+.container{
+    top: 60px;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+    position: absolute;
+    background-size: cover;
+    transition: background 0.5s;
+    background-position: center center;
+}
+
+.container iframe{
+    border: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.wrap{
+    margin: 0 auto;
+    max-width: 1000px;
+}
+
+.page-start, .page-over{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+}
+
+.page-start{
+    background: url(../sources/bg-0.jpg) center/cover;
+}
+.page-over{
+    background: url(../sources/bg-8.jpg) center/cover;
+}
+.page-start h1, .page-over h1{
+    font-size: 5vw;
+    font-weight: normal;
+    -webkit-text-stroke: 2px #fff;
+    text-shadow: 2px 2px 0px rgb(150, 135, 135);
+}
+.page-start p, .page-over p{
+    font-size: 1.5vw;
+    color: rgba(0,0,0,.8);
+}
+.page-title{
+    margin-top: 100px;
+}
+.page-title h1{
+    font: 30px normal;
+}
+
+.page-content{
+    font-size: 20px;
+    margin: 30px 0 100px 0;
+}
+
+.page-content h1, .page-content h2, .page-content h3, .page-content h4, .page-content h5, .page-content h6{
+    font-weight: normal;
+}
+.page-content h1:before, .page-content h2:before, .page-content h3:before, .page-content h4:before, .page-content h5:before, .page-content h6:before{
+    color: #27a17e;
+    content: "\f111";
+    font-family: FontAwesome;
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.page-title, .page-content{
+    padding: 30px;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12), 0 2px 4px -1px rgba(0,0,0,.2);
+}
+
+.page-content:after{
+    content: "";
+    clear: both;
+    display: block;
+}
+
+/* - 第一、二节 */
+.float-image{
+    float: right;
+    margin-left: 1em;
+}
+.float-image img{
+    max-width: 350px;
+}
+.float-image img[src$=".jpg"]{
+    box-shadow: 0 5px 20px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* - 第三节 */
+.check-items label{
+    user-select: none;
+    margin: 0 1em 0 0;
+    display: inline-block;
+}
+.check-items label:last-child{
+    margin-bottom: 0;
+}
+
+.check-items input[type="checkbox"], .check-items input[type="radio"]{
+    margin: 0 .5em 0 0;
+}
+
+.answer{
+    color: #fff;
+    text-indent: 1.5em;
+}
+
+/* - 第五节 */
+.music-learn{
+    float: right;
+    max-width: 300px;
+}
+.music-learn .cover{
+    cursor: pointer;
+    overflow: hidden;
+
+}
+.music-learn .cover img{
+    padding: 5px;
+    background: #fff;
+    border-radius: 100%;
+    border: 5px #b66939 solid;
+    animation: rotate 20s infinite linear paused;
+}
+.music-learn .cover.active img{
+    animation-play-state: running;
+}
+
+/* - 精彩回顾 */
+.photos-box{
+    text-align: center;
+}
+.photos-box img{
+    max-height: 720px;
+}
+
+/* 3 - 页尾
+-------------------------------- */
+footer{
+    color: #fff;
+    bottom: 0;
+    height: 60px;
+    padding: 10px;
+    text-align: center;
+    background: #212121;
+    box-shadow: 0 -4px 5px -2px rgba(0,0,0,0.22);
+}
+
+footer p{
+    line-height: 40px;
+}
+
+.page-selector > *{
+    float: left;
+    padding: 0 10px;
+    cursor: pointer;
+    background: #333;
+    user-select: none;
+    border-radius: 40px;
+    transition: background 0.3s, color 0.3s;
+}
+.page-selector > *:first-child{
+    margin-right: 10px;
+}
+.page-selector > * span{
+    line-height: 40px;
+}
+
+.page-selector > *:before{
+    font-size: inherit;
+    margin-right: .4em;
+    display: inline-block;
+    font-family: FontAwesome;
+}
+.page-selector > *:hover{
+    color: #fff;
+    background: #27a17e;
+}
+
+.previous-page:before{
+    content: "\f0a5";
+}
+.next-page:before{
+    content: "\f0a4";
+}
+
+.timer{
+    float: right;
+    padding: 0 10px;
+    background: #333;
+    line-height: 40px;
+    border-radius: 40px;
+}
+
+/* 4 - 动画
+-------------------------------- */
+.ani{
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+}
+.ani.infinite{
+    animation-iteration-count: infinite;
+}
+.ani.loop{
+    animation-direction: alternate;
+}
+
+/* - 动画时长 */
+.ani.slow{
+    animation-duration: 2s;
+}
+.ani.fast{
+    animation-duration: 0.5s;
+}
+
+/* - 旋转动画 */
+.ani.rotate{
+    animation-name: rotate;
+}
+@keyframes rotate{
+    0%{ transform: rotate(0deg); }
+    100%{ transform: rotate(360deg); }
+}
+
+/* - 位移动画 */
+.ani.up-and-down{
+    animation-name: up-and-down;
+    animation-direction: alternate;
+}
+@keyframes up-and-down{
+    0%{ transform: translateY(-20px); }
+    100%{ transform: translateY(20px); }
+}
+
+/* - 淡入动画 */
+.ani.fade-in-top{
+    animation-name: fade-in-top;
+}
+@keyframes fade-in-top{
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* - 缩放动画 */
+.ani.scale-small{
+    animation-name: scale-small;
+}
+@keyframes scale-small {
+    0%{ transform: scale(1.5, 1.5); }
+    100%{ transform: scale(1, 1); }
+}
+
+.ani.scale-small-left{
+    animation-name: scale-small-left;
+}
+@keyframes scale-small-left {
+    0%{ transform: scale(1.5, 1.5) translateX(15%); }
+    100%{ transform: scale(1, 1) translateX(0);}
+}
